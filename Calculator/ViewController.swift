@@ -26,6 +26,14 @@ class ViewController: UIViewController {
         //What should happen when a non-number button is pressed
         isFinishedTypingNumber = true
         
+        if let displayText = displayLabel.text {
+            // locale variable, its only accessible for 'calcButtonPressed' method scope { }
+            guard let number = Double(displayText) else {
+                fatalError("Cannot convert display label text to Double.")
+            }
+        }
+        
+        
     }
 
     @IBAction

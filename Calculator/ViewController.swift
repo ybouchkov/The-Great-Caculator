@@ -9,23 +9,35 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
+    // MARK: - IBOutlets & Properties
     @IBOutlet weak var displayLabel: UILabel!
     
+    private var isFinishedTypingNumber: Bool = true
     
-    
-    @IBAction func calcButtonPressed(_ sender: UIButton) {
+    // MARK: - ViewController Lifecyle
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+    }
+    
+    // MARK: - IBActions: Private
+    @IBAction
+    private func calcButtonPressed(_ sender: UIButton) {
         //What should happen when a non-number button is pressed
-    
-    }
-
-    
-    @IBAction func numButtonPressed(_ sender: UIButton) {
+        isFinishedTypingNumber = true
         
-        //What should happen when a number is entered into the keypad
-    
     }
 
+    @IBAction
+    private func numButtonPressed(_ sender: UIButton) {
+        if let numValue = sender.currentTitle {
+            if isFinishedTypingNumber {
+                displayLabel.text = numValue
+                isFinishedTypingNumber = false
+            } else {
+                displayLabel.text = displayLabel.text! + numValue
+            }
+        }
+    }
 }
 

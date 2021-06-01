@@ -13,6 +13,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var displayLabel: UILabel!
     
     private var isFinishedTypingNumber: Bool = true
+    private var displayValue: Double {
+        get {
+            guard let displayText = displayLabel.text, let number = Double(displayText) else {
+                fatalError("🚨 !!!Cannot convert display label text to Double.!!! 🚨")
+            }
+            return  number
+        }
+        set {
+            displayLabel.text = "\(newValue)"
+        }
+    }
     
     fileprivate enum CalculatorMethods: String {
         case ac = "AC"
@@ -31,15 +42,9 @@ class ViewController: UIViewController {
     private func calcButtonPressed(_ sender: UIButton) {
         isFinishedTypingNumber = true
         
-        if let displayText = displayLabel.text {
-            // locale variable, its only accessible for 'calcButtonPressed' method scope { }
-            guard let number = Double(displayText) else {
-                fatalError("Cannot convert display label text to Double.")
-            }
-            
-            if let calcMethod = sender.currentTitle {
-                calculateChoiceMethod(calcMethod, numValue: number)
-            }
+        // locale variable, its only accessible for 'calcButtonPressed' method scope { }
+        if let calcMethod = sender.currentTitle {
+            calculateChoiceMethod(calcMethod, numValue: displayValue)
         }
     }
     
@@ -49,9 +54,9 @@ class ViewController: UIViewController {
         case .ac:
             displayLabel.text = "\(0)"
         case .percent:
-            displayLabel.text = "\(numValue / 100)"
+            displayValue = numValue / 100
         case .plusMinus:
-            displayLabel.text = "\(numValue * -1)"
+            displayValue = numValue * -1
         default:
             fatalError("🚨 !!!Unknown functionality for this calculator!!!! 🚨:")
         }
@@ -65,17 +70,13 @@ class ViewController: UIViewController {
                 isFinishedTypingNumber = false
             } else {
                 if numValue == "." {
-                    guard let currentDisplayValue = Double(displayLabel.text!) else {
-                        fatalError("🚨!!! Cannot convert dispplayLabel.text to Double!!!")
-                    }
-                    let isInt = floor(currentDisplayValue) == currentDisplayValue
+                    let isInt = floor(displayValue) == displayValue
                     if !isInt {
                         return
                     }
                 }
                 displayLabel.text = displayLabel.text! + numValue
             }
-            
         }
     }
 }

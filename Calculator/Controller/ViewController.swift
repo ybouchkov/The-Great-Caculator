@@ -25,12 +25,6 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate enum CalculatorMethods: String {
-        case ac = "AC"
-        case plusMinus = "+/-"
-        case percent = "%"
-    }
-    
     // MARK: - ViewController Lifecyle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,24 +38,14 @@ class ViewController: UIViewController {
         
         // locale variable, its only accessible for 'calcButtonPressed' method scope { }
         if let calcMethod = sender.currentTitle {
-            calculateChoiceMethod(calcMethod, numValue: displayValue)
+            let calculator = CalculatorLogic(number: displayValue)
+            guard let result = calculator.calculate(symbol: calcMethod) else {
+                fatalError("🚨 !!!The result of the calculation is nil!!! 🚨")
+            }
+            displayValue = result
         }
     }
     
-    private func calculateChoiceMethod(_ calcMethod: String, numValue: Double) {
-        let method = CalculatorMethods(rawValue: calcMethod)
-        switch method {
-        case .ac:
-            displayLabel.text = "\(0)"
-        case .percent:
-            displayValue = numValue / 100
-        case .plusMinus:
-            displayValue = numValue * -1
-        default:
-            fatalError("🚨 !!!Unknown functionality for this calculator!!!! 🚨:")
-        }
-    }
-
     @IBAction
     private func numButtonPressed(_ sender: UIButton) {
         if let numValue = sender.currentTitle {

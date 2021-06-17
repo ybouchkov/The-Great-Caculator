@@ -10,19 +10,14 @@ import Foundation
 
 struct CalculatorLogic {
     // MARK: - Properties
-    private var number: Double
+    private var number: Double?
     
     fileprivate enum CalculatorMethods: String {
         case ac = "AC"
         case plusMinus = "+/-"
         case percent = "%"
     }
-    
-    // MARK: - Initialization
-    init(number: Double) {
-        self.number = number
-    }
-
+        
     // MARK: - Public:
     func calculate(symbol: String) -> Double? {
         return calculateChoiceMethod(symbol)
@@ -31,15 +26,22 @@ struct CalculatorLogic {
     // MARK: - Private:
     private func calculateChoiceMethod(_ calcMethod: String) -> Double {
         let method = CalculatorMethods(rawValue: calcMethod)
-        switch method {
-        case .ac:
-            return 0
-        case .percent:
-            return number * 0.01
-        case .plusMinus:
-            return number * -1
-        default:
-            fatalError("🚨 !!!Unknown functionality for this calculator!!!! 🚨:")
+        if let n = number {
+            switch method {
+            case .ac:
+                return 0
+            case .percent:
+                return n * 0.01
+            case .plusMinus:
+                return n * -1
+            default:
+                fatalError("🚨 !!!Unknown functionality for this calculator!!!! 🚨:")
+            }
         }
+        return 0.0
+    }
+    
+    mutating func setNumber(_ number: Double) {
+        self.number = number
     }
 }

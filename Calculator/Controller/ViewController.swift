@@ -11,7 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     // MARK: - IBOutlets & Properties
     @IBOutlet weak var displayLabel: UILabel!
-    
+    private var calculator = CalculatorLogic()
+
     private var isFinishedTypingNumber: Bool = true
     private var displayValue: Double {
         get {
@@ -36,9 +37,9 @@ class ViewController: UIViewController {
     private func calcButtonPressed(_ sender: UIButton) {
         isFinishedTypingNumber = true
         
+        calculator.setNumber(displayValue)
         // locale variable, its only accessible for 'calcButtonPressed' method scope { }
         if let calcMethod = sender.currentTitle {
-            let calculator = CalculatorLogic(number: displayValue)
             guard let result = calculator.calculate(symbol: calcMethod) else {
                 fatalError("🚨 !!!The result of the calculation is nil!!! 🚨")
             }
